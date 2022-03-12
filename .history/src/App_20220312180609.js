@@ -26,10 +26,10 @@ function App() {
         <Header />
         <Layout>
           <Switch>
-            <Route path={routes.coinPage} component={CoinPage} exact />
-            <Route path={routes.newCoinPage} component={CoinView} exact />
-            <Route path={routes.newHome} component={Home} exact />
             <Route path={routes.home} component={Homepage} exact />
+            <Route path={routes.CoinPage} component={CoinPage} exact />
+            <Route path={routes.newHome} component={Home} exact />
+            <Route path={routes.newCoinPage} component={CoinView} exact />
           </Switch>
         </Layout>
       </div>

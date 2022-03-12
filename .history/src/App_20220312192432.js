@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 import Homepage from './Pages/HomePage';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import CoinPage from './Pages/CoinPage';
+import CoinPage from './Pages/CoinPage.js';
 import Header from './components/Header';
 import Home from './Views/Home';
 import CoinView from './Views/CoinPage';

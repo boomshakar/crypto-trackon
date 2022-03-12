@@ -3,7 +3,6 @@ import Colour from '../lib/color.js';
 import Card from '../components/card';
 import TextContent from '../components/textContent';
 import Carousel from '../components/Carousel.js';
-import DataTable from '../components/dataTable/index.jsx';
 
 const Home = () => {
   const Dashboard = styled.div``;
@@ -63,9 +62,7 @@ const Home = () => {
           <Carousel />
         </DashboardSlider>
       </Dashboard>
-      <CoinTableWrapper>
-        <DataTable />
-      </CoinTableWrapper>
+      <CoinTableWrapper>STATS</CoinTableWrapper>
     </div>
   );
 };
