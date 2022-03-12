@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import Homepage from './Pages/HomePage';
 import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import CoinPage from './Pages/CoinPage';
 import Header from './components/Header';
 import Home from './Views/Home';
@@ -25,13 +25,11 @@ function App() {
       <div className={classes.App}>
         <Header />
         <Layout>
-          <Switch>
-            <Route path={routes.home} component={Homepage} exact />
-            <Route path={routes.CoinPage} component={CoinPage} exact />
-            <Route path={routes.newHome} component={Home} exact />
-            <Route path={routes.newCoinPage} component={CoinView} exact />
-          </Switch>
+          <Route path={routes.newHome} component={Home} exact />
+          <Route path={routes.newCoinPage} component={CoinView} exact />
         </Layout>
+        <Route path={routes.home} component={Homepage} exact />
+        <Route path={routes.CoinPage} component={CoinPage} exact />
       </div>
     </BrowserRouter>
   );
