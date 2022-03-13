@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CoinPage from './Pages/CoinPage';
 import Header from './components/Header';
 import Home from './Views/Home';
-import CoinView from './Views/CoinPage';
+import CoinView from './Views/AssetPage';
 import { routes } from './components/navigation/routes';
 import Layout from './components/layout';
 

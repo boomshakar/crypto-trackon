@@ -21,6 +21,7 @@ import { CoinList } from '../../config/api';
 import { useHistory } from 'react-router-dom';
 import { CryptoState } from '../../CryptoContext';
 import { numberWithCommas } from '../../lib/helpers';
+import Colour from '../../lib/color';
 
 const DataTable = () => {
   const [coins, setCoins] = useState([]);
@@ -97,7 +98,7 @@ const DataTable = () => {
             <Table aria-label="simple table">
               <TableHead style={{ backgroundColor: '#EEBC1D' }}>
                 <TableRow>
-                  {['Coin', 'Price', '24h Change', 'Market Cap'].map((head) => (
+                  {['Coin', 'Price', '1h Change', '24h Change', '7d Change', 'Total Vol', 'Market Cap'].map((head) => (
                     <TableCell
                       style={{
                         color: 'black',
@@ -115,9 +116,26 @@ const DataTable = () => {
 
               <TableBody>
                 {handleSearch()
-                  .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                  .slice((page - 1) * 10, (page - 1) * 20 + 20)
                   .map((row) => {
-                    const profit = row.price_change_percentage_24h > 0;
+                    {
+                      /* const profit = row.price_change_percentage_24h > 0; */
+                    }
+                    const profitLoss = (price) => {
+                      if (price >= 0.5) {
+                        return Colour.GreendWrite;
+                      } else if (price >= 0.15) {
+                        return Colour.GreendWrite;
+                      } else if (price >= 0.05) {
+                        return Colour.BlueWrite;
+                      } else if (price >= 0.0) {
+                        return Colour.PurpleWrite;
+                      } else if (price >= -0.09) {
+                        return Colour.PinkWrite;
+                      } else if (price < -0.09) {
+                        return Colour.RedWrite;
+                      }
+                    };
                     return (
                       <TableRow onClick={() => history.push(`/coins/${row.id}`)} className={classes.row} key={row.name}>
                         <TableCell
@@ -142,20 +160,40 @@ const DataTable = () => {
                           </div>
                         </TableCell>
                         <TableCell align="right">
-                          {symbol} {numberWithCommas(row.current_price.toFixed(2))}
+                          {symbol} {numberWithCommas(row.current_price.toString())}
                         </TableCell>
                         <TableCell
                           align="right"
                           style={{
-                            color: profit > 0 ? 'rgb(14, 203, 129)' : 'red',
+                            color: `${profitLoss(row.price_change_percentage_1h_in_currency)}`,
                             fontWeight: 500,
                           }}
                         >
-                          {profit && '+'}
-                          {row.price_change_percentage_24h.toFixed(2)}%
+                          {row.price_change_percentage_1h_in_currency.toFixed(2)}%
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          style={{
+                            color: `${profitLoss(row.price_change_percentage_24h_in_currency)}`,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {row.price_change_percentage_24h_in_currency.toFixed(2)}%
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          style={{
+                            color: `${profitLoss(row.price_change_percentage_7d_in_currency)}`,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {row.price_change_percentage_7d_in_currency.toFixed(2)}%
                         </TableCell>
                         <TableCell align="right">
-                          {symbol} {numberWithCommas(row.market_cap.toString().slice(0, -6))}M
+                          {symbol} {numberWithCommas(row.total_volume.toString())}
+                        </TableCell>
+                        <TableCell align="right">
+                          {symbol} {numberWithCommas(row.market_cap.toString())}
                         </TableCell>
                       </TableRow>
                     );

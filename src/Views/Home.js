@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Colour from '../lib/color.js';
 import Card from '../components/card';
 import TextContent from '../components/textContent';
-import Carousel from '../components/Carousel.js';
+import Carousel from '../components/carousel/index.jsx';
 import DataTable from '../components/dataTable/index.jsx';
 
 const Home = () => {

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { TrendingCoins } from '../config/api';
-import { CryptoState } from '../CryptoContext';
-import { numberWithCommas } from '../lib/helpers';
-import Colour from '../lib/color';
+import { TrendingCoins } from '../../config/api';
+import { CryptoState } from '../../CryptoContext';
+import { numberWithCommas } from '../../lib/helpers';
+import Colour from '../../lib/color';
 
 const Carousel = () => {
   const carouselItem = {
