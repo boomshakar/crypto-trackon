@@ -10,7 +10,8 @@ const Card = (props) => {
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
     padding: 15px 18px 18px 18px;
     flex: 1;
-    max-height: 100px;
+    height: 100px;
+    margin-right: ${props.marginR}px;
   `;
 
   return (

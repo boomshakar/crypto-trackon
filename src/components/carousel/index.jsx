@@ -8,6 +8,7 @@ import { TrendingCoins } from '../../config/api';
 import { CryptoState } from '../../CryptoContext';
 import { numberWithCommas, profitLoss } from '../../lib/helpers';
 import Colour from '../../lib/color';
+import TextContent from '../textContent';
 
 const Carousel = () => {
   const carouselItem = {
@@ -58,32 +59,27 @@ const Carousel = () => {
   const items = trending.map((coin) => {
     return (
       <Link style={carouselItem} to={`/coins/${coin.id}`}>
-        <img src={coin?.image} alt={coin.name} height="80" style={{ marginBottom: 10 }} />
+        <img src={coin?.image} alt={coin.name} height="40" style={{ marginBottom: 10, borderRadius: '50%' }} />
         <span>
           {coin?.symbol}
           &nbsp;
-          <span
-            style={{
-              color: profitLoss(coin?.price_change_percentage_24h),
-              fontWeight: 500,
-            }}
-          >
+          <TextContent colour={profitLoss(coin?.price_change_percentage_24h)} fontWeight={500}>
             {coin?.price_change_percentage_24h?.toFixed(2)}%
-          </span>
+          </TextContent>
         </span>
-        <span style={{ fontSize: 22, fontWeight: 500 }}>
+        <TextContent fontSize={15} fontWeight={400}>
           {symbol} {numberWithCommas(coin?.current_price.toFixed(2))}
-        </span>
+        </TextContent>
       </Link>
     );
   });
 
   const responsive = {
     0: {
-      items: 2,
+      items: 3,
     },
     512: {
-      items: 4,
+      items: 6,
     },
   };
 

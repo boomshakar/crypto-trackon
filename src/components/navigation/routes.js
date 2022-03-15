@@ -1,6 +1,6 @@
 export const routes = {
-  home: '/',
-  newHome: '/home',
+  newHome: '/',
+  home: '/home',
   coinPage: '/coins/:id',
   newCoinPage: '/coin',
 };
