@@ -1,7 +1,24 @@
 import ChartJsImage from 'chartjs-to-image';
+import Colour from './color';
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
+export const profitLoss = (price) => {
+  if (price >= 0.5) {
+    return Colour.GreendWrite;
+  } else if (price >= 0.15) {
+    return Colour.GreendWrite;
+  } else if (price >= 0.05) {
+    return Colour.BlueWrite;
+  } else if (price >= 0.0) {
+    return Colour.PurpleWrite;
+  } else if (price >= -0.09) {
+    return Colour.PinkWrite;
+  } else if (price < -0.09) {
+    return Colour.RedWrite;
+  }
+};
 
 export const getChartUri = (data, bdColor) => {
   let key = Array.from(data.keys());

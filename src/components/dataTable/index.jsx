@@ -21,7 +21,7 @@ import ChartJsImage from 'chartjs-to-image';
 import { CoinList } from '../../config/api';
 import { useHistory } from 'react-router-dom';
 import { CryptoState } from '../../CryptoContext';
-import { getChartUri, numberWithCommas } from '../../lib/helpers';
+import { getChartUri, numberWithCommas, profitLoss } from '../../lib/helpers';
 import Colour from '../../lib/color';
 
 const DataTable = () => {
@@ -235,21 +235,6 @@ const DataTable = () => {
                   {handleSearch()
                     .slice((page - 1) * 10, (page - 1) * 20 + 20)
                     .map((row) => {
-                      const profitLoss = (price) => {
-                        if (price >= 0.5) {
-                          return Colour.GreendWrite;
-                        } else if (price >= 0.15) {
-                          return Colour.GreendWrite;
-                        } else if (price >= 0.05) {
-                          return Colour.BlueWrite;
-                        } else if (price >= 0.0) {
-                          return Colour.PurpleWrite;
-                        } else if (price >= -0.09) {
-                          return Colour.PinkWrite;
-                        } else if (price < -0.09) {
-                          return Colour.RedWrite;
-                        }
-                      };
                       return (
                         <TableRow
                           onClick={() => history.push(`/coins/${row.id}`)}

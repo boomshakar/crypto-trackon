@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { TrendingCoins } from '../../config/api';
 import { CryptoState } from '../../CryptoContext';
-import { numberWithCommas } from '../../lib/helpers';
+import { numberWithCommas, profitLoss } from '../../lib/helpers';
 import Colour from '../../lib/color';
 
 const Carousel = () => {
@@ -56,8 +56,6 @@ const Carousel = () => {
   // const classes = useStyles();
 
   const items = trending.map((coin) => {
-    let profit = coin?.price_change_percentage_24h >= 0;
-
     return (
       <Link style={carouselItem} to={`/coins/${coin.id}`}>
         <img src={coin?.image} alt={coin.name} height="80" style={{ marginBottom: 10 }} />
@@ -66,11 +64,10 @@ const Carousel = () => {
           &nbsp;
           <span
             style={{
-              color: profit > 0 ? Colour.GreendWrite : Colour.RedWrite,
+              color: profitLoss(coin?.price_change_percentage_24h),
               fontWeight: 500,
             }}
           >
-            {profit && '+'}
             {coin?.price_change_percentage_24h?.toFixed(2)}%
           </span>
         </span>
