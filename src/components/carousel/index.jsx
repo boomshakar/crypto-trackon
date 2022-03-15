@@ -26,17 +26,16 @@ const Carousel = () => {
   const [trending, setTrending] = useState([]);
   const { currency, symbol } = CryptoState();
 
+  useEffect(() => {
+    fetchTrendingCoins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currency]);
   const fetchTrendingCoins = async () => {
     const { data } = await axios.get(TrendingCoins(currency));
 
     console.log(data);
     setTrending(data);
   };
-
-  useEffect(() => {
-    fetchTrendingCoins();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currency]);
 
   // const useStyles = makeStyles((theme) => ({
   //   carousel: {
@@ -94,7 +93,7 @@ const Carousel = () => {
   return (
     <div style={carousel}>
       <AliceCarousel
-        mouseTracking
+        mouseTracking={true}
         infinite
         autoPlayInterval={1000}
         animationDuration={1500}
