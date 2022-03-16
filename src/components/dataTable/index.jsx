@@ -5,6 +5,7 @@ import {
   Container,
   createTheme,
   TableCell,
+  Box,
   LinearProgress,
   ThemeProvider,
   Typography,
@@ -54,6 +55,7 @@ const DataTable = () => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [progress, setProgress] = useState(0);
 
   const { currency, symbol } = CryptoState();
 
@@ -143,7 +145,22 @@ const DataTable = () => {
 
   useEffect(() => {
     fetchCoins();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        // if (oldProgress === 100) {
+        //   return 0;
+        // }
+        const diff = Math.random() * 10;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 500);
+
+    return () => {
+      clearInterval(timer);
+      // setProgress(100);
+    };
   }, [currency]);
 
   const fetchCoins = async () => {
@@ -240,8 +257,10 @@ const DataTable = () => {
         />
         <Paper>
           <TableContainer style={{ maxHeight: 500 }}>
-            {loading ? (
-              <LinearProgress style={{ backgroundColor: 'gold' }} />
+            {progress < 100 ? (
+              <Box sx={{ width: '100%' }}>
+                <LinearProgress style={{ backgroundColor: 'gold' }} variant="determinate" value={progress} />
+              </Box>
             ) : (
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
