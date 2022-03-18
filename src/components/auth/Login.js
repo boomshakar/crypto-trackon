@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { TextField } from '@material-ui/core';
+import { CircularProgress, TextField } from '@material-ui/core';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 import Colour from '../../lib/color';
 import { notification } from '../../lib/helpers';
 import { auth } from '../../firebase';
+import styled from 'styled-components';
 
 const Login = ({ handleClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [localLoginLoad, setLocalLoginLoad] = useState(false);
 
   const handleSubmit = async (e) => {
+    setLocalLoginLoad(true);
     if (!email || !password) {
       notification(`Please fill all fields`, 'warn');
+      setLocalLoginLoad(false);
       return;
     }
     e.preventDefault();
@@ -22,39 +26,43 @@ const Login = ({ handleClose }) => {
       const result = await signInWithEmailAndPassword(auth, email, password);
       console.log(result);
       notification(`Login successful. Welcome ${result.user.email}`, 'success');
+      setLocalLoginLoad(false);
     } catch (error) {
       notification(`Oops! Something went wrong 😒`, 'error');
       notification(error.message, 'error');
+      setLocalLoginLoad(false);
       console.log(error);
     }
   };
   return (
-    <Box p={3} style={{ color: Colour.LightrayWriteBold, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <TextField
-        variant="outlined"
-        type="email"
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        fullWidth
-      />
-      <TextField
-        variant="outlined"
-        type="password"
-        label="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        fullWidth
-      />
-      <Button
-        variant="contained"
-        size="large"
-        onClick={handleSubmit}
-        style={{ background: 'gold', color: Colour.DarkGrayBG }}
-      >
-        Login
-      </Button>
-    </Box>
+    <>
+      <Box p={3} style={{ color: Colour.LightrayWriteBold, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <TextField
+          variant="outlined"
+          type="email"
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+        />
+        <TextField
+          variant="outlined"
+          type="password"
+          label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+        />
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleSubmit}
+          style={{ background: 'gold', color: Colour.DarkGrayBG }}
+        >
+          {localLoginLoad && <CircularProgress size={18} style={{ marginRight: '15px' }} />}Login
+        </Button>
+      </Box>
+    </>
   );
 };
 

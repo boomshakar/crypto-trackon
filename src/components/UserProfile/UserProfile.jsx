@@ -7,6 +7,7 @@ import Colour from '../../lib/color';
 import { signOut } from '@firebase/auth';
 import { auth } from '../../firebase';
 import { notification } from '../../lib/helpers';
+import { CryptoState } from '../../CryptoContext';
 
 const AvatarContain = styled.span`
   display: flex;
@@ -35,6 +36,7 @@ const UserProfile = () => {
   };
 
   const classes = useStyles();
+  const { user } = CryptoState();
 
   const logout = () => {
     signOut(auth);
@@ -51,9 +53,9 @@ const UserProfile = () => {
         onMouseLeave={popoverLeave}
       >
         <Chip
-          avatar={<Avatar style={{ color: 'green' }} src="/broken-image.jpg" />}
-          label="Avatar"
-          sx={{ color: 'red', borderColor: 'gold' }}
+          avatar={<Avatar src={user.photoURL || '/broken-image.jpg'} />}
+          label={user?.displayName || user?.name || user?.email}
+          sx={{ color: Colour.LightrayWrite, borderColor: 'gold' }}
           variant="outlined"
           clickable
         />
