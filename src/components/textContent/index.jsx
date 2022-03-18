@@ -7,8 +7,10 @@ const Text = styled.span`
   font-size: ${(props) => props.fontSize}px;
   font-weight: ${(props) => props.fontWeight};
   color: ${(props) => props.colour || Colour.LightrayWriteBold};
+  background: ${(props) => props.bgColour};
   text-align: ${(props) => props.textAlign};
   display: ${(props) => props.display};
+  margin: ${(props) => props.margin};
   ${(props) => (props.onClick ? 'cursor: pointer;' : '')};
 `;
 
@@ -16,6 +18,8 @@ export default function TextContent(props) {
   return (
     <Text
       colour={props.colour}
+      margin={props.margin}
+      bgColour={props.bgColour}
       block={props.block}
       textAlign={props.textAlign}
       onClick={props.onClick}

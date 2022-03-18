@@ -1,4 +1,6 @@
 import { makeStyles } from '@material-ui/core';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer } from 'react-toastify';
 import Homepage from './Pages/HomePage';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -24,6 +26,7 @@ function App() {
     <BrowserRouter>
       <div className={classes.App}>
         {/* <Header /> */}
+
         <Layout>
           <Switch>
             <Route path={routes.coinPage} component={CoinPage} exact />
@@ -33,6 +36,18 @@ function App() {
           </Switch>
         </Layout>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </BrowserRouter>
   );
 }

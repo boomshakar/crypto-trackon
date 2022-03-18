@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { CryptoState } from '../../CryptoContext.js';
 import Colour from '../../lib/color.js';
+import AuthModal from '../auth/AuthModal.js';
 import TextContent from '../textContent';
 
 const LayoutWrapper = styled.div`
@@ -49,6 +50,7 @@ const LeftNav = styled.div`
   height: 100%;
   background: #262729;
   color: #93979e;
+  display: flex;
 `;
 
 const Main = styled.div`
@@ -107,7 +109,7 @@ const TermsAndPrivacy = styled.span`
 `;
 
 const Layout = ({ children }) => {
-  const { currency, setCurrency } = CryptoState();
+  const { currency, setCurrency, user } = CryptoState();
   const history = useHistory();
   return (
     <LayoutWrapper>
@@ -137,6 +139,7 @@ const Layout = ({ children }) => {
             <MenuItem value={'NGN'}>NGN</MenuItem>
             <MenuItem value={'USD'}>USD</MenuItem>
           </Select>
+          {user ? 'Logout' : <AuthModal />}
         </LeftNav>
       </NavContainer>
       <Main>

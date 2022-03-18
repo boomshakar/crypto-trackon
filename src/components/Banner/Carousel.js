@@ -1,11 +1,11 @@
-import { makeStyles } from "@material-ui/core";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import AliceCarousel from "react-alice-carousel";
-import { Link } from "react-router-dom";
-import { TrendingCoins } from "../../config/api";
-import { CryptoState } from "../../CryptoContext";
-import { numberWithCommas } from "../CoinsTable";
+import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import AliceCarousel from 'react-alice-carousel';
+import { Link } from 'react-router-dom';
+import { TrendingCoins } from '../../config/api';
+import { CryptoState } from '../../CryptoContext';
+import { numberWithCommas } from '../../lib/helpers';
 
 const Carousel = () => {
   const [trending, setTrending] = useState([]);
@@ -25,17 +25,17 @@ const Carousel = () => {
 
   const useStyles = makeStyles((theme) => ({
     carousel: {
-      height: "50%",
-      display: "flex",
-      alignItems: "center",
+      height: '50%',
+      display: 'flex',
+      alignItems: 'center',
     },
     carouselItem: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      cursor: "pointer",
-      textTransform: "uppercase",
-      color: "white",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      cursor: 'pointer',
+      textTransform: 'uppercase',
+      color: 'white',
     },
   }));
 
@@ -46,22 +46,17 @@ const Carousel = () => {
 
     return (
       <Link className={classes.carouselItem} to={`/coins/${coin.id}`}>
-        <img
-          src={coin?.image}
-          alt={coin.name}
-          height="80"
-          style={{ marginBottom: 10 }}
-        />
+        <img src={coin?.image} alt={coin.name} height="80" style={{ marginBottom: 10 }} />
         <span>
           {coin?.symbol}
           &nbsp;
           <span
             style={{
-              color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+              color: profit > 0 ? 'rgb(14, 203, 129)' : 'red',
               fontWeight: 500,
             }}
           >
-            {profit && "+"}
+            {profit && '+'}
             {coin?.price_change_percentage_24h?.toFixed(2)}%
           </span>
         </span>

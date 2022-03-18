@@ -50,7 +50,7 @@ const CustomInput = styled.input`
   }
 `;
 
-const DataTable = ({ dataTBL, userStatus }) => {
+const DataTable = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
@@ -144,9 +144,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
   })();
 
   useEffect(() => {
-    // fetchCoins();
-
-    // setCoins(dataTBL);
+    fetchCoins();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const timer = setInterval(() => {
@@ -158,6 +156,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
         return Math.min(oldProgress + diff, 100);
       });
     }, 120);
+
     return () => {
       clearInterval(timer);
       // setProgress(100);
@@ -166,15 +165,15 @@ const DataTable = ({ dataTBL, userStatus }) => {
 
   const fetchCoins = async () => {
     setLoading(true);
-    // const { data } = await axios.get(CoinList(currency));
-    // console.log(data);
+    const { data } = await axios.get(CoinList(currency));
+    console.log(data);
 
+    setCoins(data);
     setLoading(false);
   };
-  console.log(dataTBL);
 
   const handleSearch = () => {
-    return dataTBL.filter(
+    return coins.filter(
       (coin) => coin.name.toLowerCase().includes(search) || coin.symbol.toLowerCase().includes(search)
     );
   };
@@ -263,7 +262,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
                 <LinearProgress style={{ backgroundColor: 'gold' }} variant="determinate" value={progress} />
               </Box>
             ) : (
-              <Table stickyHeader aria-label="sticky table">
+              <Table stickyHeader aria-label="sticky spanning table">
                 <TableHead>
                   <TableRow className={classes.tableHaed}>
                     {columns.map((head) => (
@@ -283,149 +282,145 @@ const DataTable = ({ dataTBL, userStatus }) => {
                   </TableRow>
                 </TableHead>
 
-                {dataTBL.length === 0 ? (
-                  <TableBody>
-                    <TableRow style={{ position: 'relative', height: '100px' }}>
-                      <TableCell
-                        style={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                        colSpan={9}
-                      >
-                        <div style={{ width: '100%' }}>Hello</div>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                ) : (
-                  <TableBody>
-                    {handleSearch()
-                      .slice((page - 1) * 10, (page - 1) * 20 + 20)
-                      .map((row) => {
-                        return (
-                          <TableRow
-                            className={classes.row}
-                            // hover
-                            key={row.name}
+                <TableBody>
+                  <TableRow style={{ position: 'relative', height: '100px', display: 'flex', alignItems: 'center' }}>
+                    <TableCell
+                      style={
+                        {
+                          // position: 'absolute',
+                          // top: '50%',
+                          // left: '50%',
+                        }
+                      }
+                      colSpan={9}
+                    >
+                      Hello
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableBody>
+                  {handleSearch()
+                    .slice((page - 1) * 10, (page - 1) * 20 + 20)
+                    .map((row) => {
+                      return (
+                        <TableRow
+                          className={classes.row}
+                          // hover
+                          key={row.name}
+                        >
+                          <TableCell
+                            style={{
+                              fontSize: '12px',
+                              color: Colour.LightrayWriteBold,
+                              // display: 'flex',
+                              // flexDirection: 'row',
+                              // justifyContent: 'center',
+                              position: 'relative',
+                            }}
+                            align="center"
                           >
-                            <TableCell
-                              style={{
-                                fontSize: '12px',
-                                color: Colour.LightrayWriteBold,
-                                // display: 'flex',
-                                // flexDirection: 'row',
-                                // justifyContent: 'center',
-                                position: 'relative',
-                              }}
-                              align="center"
-                            >
-                              {/* <TextContent>{row.market_cap_rank}</TextContent> */}
-                              {row.market_cap_rank}
-                              <CustomInput type="checkbox" />
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              component="th"
-                              scope="row"
-                              style={{
-                                display: 'flex',
-                                gap: 15,
-                                alignItems: 'center',
-                              }}
-                            >
-                              <img src={row?.image} alt={row.name} height="24" style={{ borderRadius: '50%' }} />
-                              <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <span style={{ color: Colour.DarkGrayWrite, fontSize: '12px', marginRight: '8px' }}>
-                                  {row.name}
-                                </span>
-                                <span
-                                  style={{
-                                    textTransform: 'uppercase',
-                                    color: Colour.LightrayWriteBold,
-                                    fontSize: '8px',
-                                    marginTop: '2px',
-                                  }}
-                                >
-                                  {row.symbol}
-                                </span>
-                              </div>
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              align="right"
-                              style={{ fontSize: '12px', color: Colour.LightrayWriteBold }}
-                            >
-                              {symbol} {numberWithCommas(row.current_price.toString())}
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              align="center"
-                              style={{
-                                color: `${profitLoss(row.price_change_percentage_1h_in_currency)}`,
-                                fontWeight: 500,
-                              }}
-                            >
-                              {row.price_change_percentage_1h_in_currency.toFixed(2)}%
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              align="center"
-                              style={{
-                                color: `${profitLoss(row.price_change_percentage_24h_in_currency)}`,
-                                fontWeight: 500,
-                              }}
-                            >
-                              {row.price_change_percentage_24h_in_currency.toFixed(2)}%
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              align="center"
-                              style={{
-                                color: `${profitLoss(row.price_change_percentage_7d_in_currency)}`,
-                                fontWeight: 500,
-                              }}
-                            >
-                              {row.price_change_percentage_7d_in_currency.toFixed(2)}%
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              align="right"
-                              style={{
-                                fontSize: '12px',
-                                color: Colour.LightrayWriteBold,
-                              }}
-                            >
-                              {symbol} {numberWithCommas(row.total_volume.toString())}
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              align="right"
-                              style={{
-                                fontSize: '12px',
-                                color: Colour.LightrayWriteBold,
-                              }}
-                            >
-                              {symbol} {numberWithCommas(row.market_cap.toString())}
-                            </TableCell>
-                            <TableCell
-                              onClick={() => history.push(`/coins/${row.id}`)}
-                              style={{ color: Colour.LightrayWriteBold }}
-                              align="center"
-                            >
-                              {getChartUri(
-                                row.sparkline_in_7d.price,
-                                profitLoss(row.price_change_percentage_7d_in_currency)
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                  </TableBody>
-                )}
+                            {/* <TextContent>{row.market_cap_rank}</TextContent> */}
+                            {row.market_cap_rank}
+                            <CustomInput type="checkbox" />
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            component="th"
+                            scope="row"
+                            style={{
+                              display: 'flex',
+                              gap: 15,
+                              alignItems: 'center',
+                            }}
+                          >
+                            <img src={row?.image} alt={row.name} height="24" style={{ borderRadius: '50%' }} />
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <span style={{ color: Colour.DarkGrayWrite, fontSize: '12px', marginRight: '8px' }}>
+                                {row.name}
+                              </span>
+                              <span
+                                style={{
+                                  textTransform: 'uppercase',
+                                  color: Colour.LightrayWriteBold,
+                                  fontSize: '8px',
+                                  marginTop: '2px',
+                                }}
+                              >
+                                {row.symbol}
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            align="right"
+                            style={{ fontSize: '12px', color: Colour.LightrayWriteBold }}
+                          >
+                            {symbol} {numberWithCommas(row.current_price.toString())}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            align="center"
+                            style={{
+                              color: `${profitLoss(row.price_change_percentage_1h_in_currency)}`,
+                              fontWeight: 500,
+                            }}
+                          >
+                            {row.price_change_percentage_1h_in_currency.toFixed(2)}%
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            align="center"
+                            style={{
+                              color: `${profitLoss(row.price_change_percentage_24h_in_currency)}`,
+                              fontWeight: 500,
+                            }}
+                          >
+                            {row.price_change_percentage_24h_in_currency.toFixed(2)}%
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            align="center"
+                            style={{
+                              color: `${profitLoss(row.price_change_percentage_7d_in_currency)}`,
+                              fontWeight: 500,
+                            }}
+                          >
+                            {row.price_change_percentage_7d_in_currency.toFixed(2)}%
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            align="right"
+                            style={{
+                              fontSize: '12px',
+                              color: Colour.LightrayWriteBold,
+                            }}
+                          >
+                            {symbol} {numberWithCommas(row.total_volume.toString())}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            align="right"
+                            style={{
+                              fontSize: '12px',
+                              color: Colour.LightrayWriteBold,
+                            }}
+                          >
+                            {symbol} {numberWithCommas(row.market_cap.toString())}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => history.push(`/coins/${row.id}`)}
+                            style={{ color: Colour.LightrayWriteBold }}
+                            align="center"
+                          >
+                            {getChartUri(
+                              row.sparkline_in_7d.price,
+                              profitLoss(row.price_change_percentage_7d_in_currency)
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
               </Table>
             )}
           </TableContainer>

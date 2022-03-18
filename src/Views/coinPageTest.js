@@ -1,16 +1,17 @@
-import { LinearProgress, makeStyles, Typography } from '@material-ui/core';
+import { LinearProgress, Box, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 import CoinInfo from '../components/CoinInfo';
 import { SingleCoin } from '../config/api';
-import { numberWithCommas } from '../../lib/helpers';
+import { numberWithCommas } from '../components/CoinsTable';
 import { CryptoState } from '../CryptoContext';
 
 const CoinPage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
+  const [progress, setProgress] = useState(0);
 
   const { currency, symbol } = CryptoState();
 
@@ -23,6 +24,20 @@ const CoinPage = () => {
   useEffect(() => {
     fetchCoin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        // if (oldProgress === 100) {
+        //   return 0;
+        // }
+        const diff = Math.random() * 10;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 500);
+
+    return () => {
+      clearInterval(timer);
+      // setProgress(100);
+    };
   }, []);
 
   const useStyles = makeStyles((theme) => ({
@@ -78,7 +93,13 @@ const CoinPage = () => {
 
   const classes = useStyles();
 
-  if (!coin) return <LinearProgress style={{ backgroundColor: 'gold' }} />;
+  if (!coin && progress < 100) {
+    return (
+      <Box sx={{ width: '100%' }}>
+        <LinearProgress style={{ backgroundColor: 'gold' }} variant="determinate" value={progress} />
+      </Box>
+    );
+  }
 
   return (
     <div className={classes.container}>
