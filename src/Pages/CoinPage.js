@@ -1,4 +1,4 @@
-import { LinearProgress, Box, makeStyles, Typography } from '@material-ui/core';
+import { LinearProgress, Box, makeStyles, Typography, Button } from '@material-ui/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -8,8 +8,10 @@ import { SingleCoin } from '../config/api';
 import { CryptoState } from '../CryptoContext';
 import styled from 'styled-components';
 import TextContent from '../components/textContent';
-import { numberWithCommas, profitLoss } from '../lib/helpers';
+import { notification, numberWithCommas, profitLoss } from '../lib/helpers';
 import Colour from '../lib/color';
+import { doc, setDoc } from '@firebase/firestore';
+import { db } from '../firebase';
 
 const TopSection = styled.div`
   display: flex;
@@ -25,7 +27,7 @@ const CoinPage = () => {
   const [coin, setCoin] = useState();
   const [progress, setProgress] = useState(0);
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, user, watchlist } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
@@ -52,6 +54,26 @@ const CoinPage = () => {
     };
   }, []);
 
+  const inWatchlist = watchlist.includes(coin?.id);
+
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user?.uid);
+    try {
+      await setDoc(coinRef, { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] });
+      notification(`${coin.name} Added to the Watchlist`, 'success');
+    } catch (error) {
+      notification(error.message, 'error');
+    }
+  };
+  const removeFromWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user?.uid);
+    try {
+      await setDoc(coinRef, { coins: watchlist.filter((watch) => watch !== coin?.id) }, { merge: true });
+      notification(`${coin.name} Removed to the Watchlist`, 'success');
+    } catch (error) {
+      notification(error.message, 'error');
+    }
+  };
   const useStyles = makeStyles((theme) => ({
     container: {
       display: 'flex',
@@ -249,6 +271,18 @@ const CoinPage = () => {
           <img src={coin?.image.large} alt={coin?.name} height="200" style={{ marginBottom: 20 }} />
           <Typography variant="h3" className={classes.heading}>
             {coin?.name}
+            {user && (
+              <Button
+                variant="outlined"
+                style={{
+                  height: 40,
+                  backgroundColor: inWatchlist ? 'red' : 'gold',
+                }}
+                onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
+              >
+                {inWatchlist ? 'Remove from Wachlist' : 'Add to Watchlist'}
+              </Button>
+            )}
           </Typography>
           <Typography variant="subtitle1" className={classes.description}>
             {ReactHtmlParser(coin?.description.en.split('. ')[0])}.
