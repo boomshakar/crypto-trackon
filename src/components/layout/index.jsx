@@ -5,6 +5,7 @@ import { CryptoState } from '../../CryptoContext.js';
 import Colour from '../../lib/color.js';
 import AuthModal from '../auth/AuthModal.js';
 import TextContent from '../textContent';
+import UserProfile from '../UserProfile/UserProfile.jsx';
 
 const LayoutWrapper = styled.div`
   ${'' /* display: flex; */}
@@ -32,6 +33,7 @@ const RightNav = styled.div`
   background: #262729;
   color: #93979e;
   display: flex;
+  align-items: center;
 `;
 const NavLogo = styled.div`
   ${'' /* position: relative; */}
@@ -51,6 +53,7 @@ const LeftNav = styled.div`
   background: #262729;
   color: #93979e;
   display: flex;
+  align-items: center;
 `;
 
 const Main = styled.div`
@@ -139,19 +142,13 @@ const Layout = ({ children }) => {
             <MenuItem value={'NGN'}>NGN</MenuItem>
             <MenuItem value={'USD'}>USD</MenuItem>
           </Select>
-          {user ? 'Logout' : <AuthModal />}
+          {user ? <UserProfile /> : <AuthModal />}
         </LeftNav>
       </NavContainer>
       <Main>
-        {/* <TobBar>
-                    <UserName onClick={show}>
-                        <span>{authContextProps.user?.fullname}</span>
-                        <span><i className="fas fa-chevron-down" /></span>
-                    </UserName>
-                </TobBar> */}
         <Body>{children}</Body>
         <Footer>
-          <Copyright>&copy; {new Date().getFullYear()}. Muzingo</Copyright>
+          <Copyright>&copy; {new Date().getFullYear()} ‹.boomShaKar!</Copyright>
           <TermsAndPrivacy>
             <a href="#" target="_blank" rel="noreferrer">
               Terms of Use

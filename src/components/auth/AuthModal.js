@@ -4,6 +4,7 @@ import Colour from '../../lib/color';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import Login from './Login';
 import Signup from './Signup';
+import { Chip } from '@material-ui/core';
 
 const style = {
   position: 'absolute',
@@ -36,19 +37,17 @@ export default function AuthModal() {
   };
   return (
     <div>
-      <Button
-        onClick={handleOpen}
-        variant="contained"
+      <Chip
+        label="Login"
         style={{
-          width: 85,
-          height: 40,
           marginLeft: 15,
-          backgroundColor: 'gold',
-          color: Colour.DarkGrayBG,
+          color: 'gold',
+          borderColor: 'gold',
         }}
-      >
-        Login
-      </Button>
+        variant="outlined"
+        onClick={handleOpen}
+        clickable
+      />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
