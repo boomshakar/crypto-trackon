@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from '@firebase/auth';
 import Colour from '../../lib/color';
 import { notification } from '../../lib/helpers';
 import { auth } from '../../firebase';
+import { ModalState } from '../../context/ModalContext';
 
 const Signup = ({ handleClose }) => {
   // const [username, setUsername] = useState('');
@@ -12,6 +13,8 @@ const Signup = ({ handleClose }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [localSignupLoad, setLocalSignupLoad] = useState(false);
+
+  const { modalHandleClose } = ModalState();
 
   const handleSubmit = async (e) => {
     setLocalSignupLoad(true);
@@ -27,6 +30,7 @@ const Signup = ({ handleClose }) => {
       console.log(result);
       notification(`Signup successful. Welcome ${result.user.email}`, 'success');
       setLocalSignupLoad(false);
+      modalHandleClose();
     } catch (error) {
       notification(`Oops! Something went wrong 😒`, 'error');
       setLocalSignupLoad(true);

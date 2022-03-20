@@ -28,6 +28,9 @@ import TextContent from '../textContent';
 import styled from 'styled-components';
 import { doc, setDoc } from '@firebase/firestore';
 import { db } from '../../firebase';
+import AuthModal from '../auth/AuthModal';
+import AuthModalComp from '../Modal/Modal';
+import { ModalState } from '../../context/ModalContext';
 
 const CustomInput = styled.input`
   visibility: hidden;
@@ -58,8 +61,12 @@ const DataTable = ({ dataTBL, userStatus }) => {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [progress, setProgress] = useState(0);
+  // const [modalOpen, setModalOpen] = useState(false);
+  // const handleOpen = () => setModalOpen(true);
+  // const handleClose = () => setModalOpen(false);
 
   const { currency, symbol, watchlist, user } = CryptoState();
+  const { modalOpen, modalHandleClose, modalHandleOpen } = ModalState();
 
   const useStyles = makeStyles({
     tableHaed: {
@@ -205,6 +212,11 @@ const DataTable = ({ dataTBL, userStatus }) => {
     }
   };
 
+  const singInModal = () => {
+    modalHandleOpen();
+    console.log('clicked');
+  };
+  console.log(modalOpen);
   const checkHandler = (coinId, coinName) => {
     if (inWatchlist(coinId)) {
       removeFromWatchlist(coinId, coinName);
@@ -212,7 +224,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
       addToWatchlist(coinId, coinName);
     }
   };
-
+  if (modalOpen) return <AuthModalComp />;
   const columns = [
     {
       id: '#',
@@ -365,7 +377,9 @@ const DataTable = ({ dataTBL, userStatus }) => {
                                 checked={inWatchlist(row.id)}
                                 // defaultChecked={inWatchlist(row.id)}
                                 defaultValue={inWatchlist(row.id)}
-                                onChange={() => checkHandler(row.id, row.name)}
+                                onChange={() => {
+                                  user ? checkHandler(row.id, row.name) : singInModal();
+                                }}
                               />
                             </TableCell>
                             <TableCell

@@ -7,12 +7,14 @@ import Colour from '../../lib/color';
 import { notification } from '../../lib/helpers';
 import { auth } from '../../firebase';
 import styled from 'styled-components';
+import { ModalState } from '../../context/ModalContext';
 
 const Login = ({ handleClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [localLoginLoad, setLocalLoginLoad] = useState(false);
 
+  const { modalHandleClose } = ModalState();
   const handleSubmit = async (e) => {
     setLocalLoginLoad(true);
     if (!email || !password) {
@@ -27,6 +29,7 @@ const Login = ({ handleClose }) => {
       console.log(result);
       notification(`Login successful. Welcome ${result.user.email}`, 'success');
       setLocalLoginLoad(false);
+      modalHandleClose();
     } catch (error) {
       notification(`Oops! Something went wrong 😒`, 'error');
       notification(error.message, 'error');
