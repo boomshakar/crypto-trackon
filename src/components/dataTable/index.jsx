@@ -22,10 +22,12 @@ import ChartJsImage from 'chartjs-to-image';
 import { CoinList } from '../../config/api';
 import { useHistory } from 'react-router-dom';
 import { CryptoState } from '../../CryptoContext';
-import { getChartUri, numberWithCommas, profitLoss } from '../../lib/helpers';
+import { getChartUri, notification, numberWithCommas, profitLoss } from '../../lib/helpers';
 import Colour from '../../lib/color';
 import TextContent from '../textContent';
 import styled from 'styled-components';
+import { doc, setDoc } from '@firebase/firestore';
+import { db } from '../../firebase';
 
 const CustomInput = styled.input`
   visibility: hidden;
@@ -57,7 +59,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
   const [page, setPage] = useState(1);
   const [progress, setProgress] = useState(0);
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, watchlist, user } = CryptoState();
 
   const useStyles = makeStyles({
     tableHaed: {
@@ -178,6 +180,39 @@ const DataTable = ({ dataTBL, userStatus }) => {
       (coin) => coin.name.toLowerCase().includes(search) || coin.symbol.toLowerCase().includes(search)
     );
   };
+
+  const inWatchlist = (id) => {
+    return watchlist.includes(id);
+  };
+
+  const addToWatchlist = async (coinId, coinName) => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(coinRef, { coins: watchlist ? [...watchlist, coinId] : [coinId] }, { merge: true });
+      notification(`${coinName} Added to the Watchlist`, 'success');
+    } catch (error) {
+      console.error(error.message);
+      notification(error.message, 'error');
+    }
+  };
+  const removeFromWatchlist = async (coinId, coinName) => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(coinRef, { coins: watchlist.filter((watch) => watch !== coinId) }, { merge: true });
+      notification(`${coinName} Removed from the Watchlist`, 'success');
+    } catch (error) {
+      notification(error.message, 'error');
+    }
+  };
+
+  const checkHandler = (coinId, coinName) => {
+    if (inWatchlist(coinId)) {
+      removeFromWatchlist(coinId, coinName);
+    } else {
+      addToWatchlist(coinId, coinName);
+    }
+  };
+
   const columns = [
     {
       id: '#',
@@ -325,7 +360,13 @@ const DataTable = ({ dataTBL, userStatus }) => {
                             >
                               {/* <TextContent>{row.market_cap_rank}</TextContent> */}
                               {row.market_cap_rank}
-                              <CustomInput type="checkbox" />
+                              <CustomInput
+                                type="checkbox"
+                                checked={inWatchlist(row.id)}
+                                // defaultChecked={inWatchlist(row.id)}
+                                defaultValue={inWatchlist(row.id)}
+                                onChange={() => checkHandler(row.id, row.name)}
+                              />
                             </TableCell>
                             <TableCell
                               onClick={() => history.push(`/coins/${row.id}`)}
