@@ -10,7 +10,7 @@ import CryptoTable from '../components/CryptoTable/CrytoTable';
 import { CoinList, GlobalCoins } from '../config/api.js';
 import { Typography } from '@material-ui/core';
 import { CryptoState } from '../CryptoContext.js';
-import WishlistTable from '../components/WishlistTable/WishlistTable.jsx';
+import WishlistTable from '../components/WatchlistTable/WatchistTable.jsx';
 import CustomTag from '../components/CustomTag/CustomTag.jsx';
 
 const Dashboard = styled.div``;

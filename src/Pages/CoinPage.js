@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import TextContent from '../components/textContent';
 import { notification, numberWithCommas, profitLoss } from '../lib/helpers';
 import Colour from '../lib/color';
-import { doc, setDoc } from '@firebase/firestore';
+import { addDoc, collection, doc, setDoc } from '@firebase/firestore';
 import { db } from '../firebase';
 
 const TopSection = styled.div`
@@ -57,19 +57,39 @@ const CoinPage = () => {
   const inWatchlist = watchlist.includes(coin?.id);
 
   const addToWatchlist = async () => {
-    const coinRef = doc(db, 'watchlist', user?.uid);
+    const coinRef = doc(db, 'watchlist', user.uid);
     try {
-      await setDoc(coinRef, { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] });
+      await setDoc(coinRef, { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] }, { merge: true });
       notification(`${coin.name} Added to the Watchlist`, 'success');
     } catch (error) {
+      console.error(error.message);
       notification(error.message, 'error');
     }
+    // const collectionRef = collection(db, `watchlist`).doc(user?.uid);
+    // const payload = { coin };
+    // await addDoc(collectionRef, payload)
+    //   .then((res) => {
+    //     console.log(res);
+    //     notification(`${res.name} Added to the Watchlist`, 'success');
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     notification(err.message, 'error');
+    //   });
+
+    // db.child('watchlist').push(coin, (err) => {
+    //   if (err) {
+    //     notification(err.message, 'error');
+    //   } else {
+    //     notification('Added success', 'success');
+    //   }
+    // });
   };
   const removeFromWatchlist = async () => {
-    const coinRef = doc(db, 'watchlist', user?.uid);
+    const coinRef = doc(db, 'watchlist', user.uid);
     try {
       await setDoc(coinRef, { coins: watchlist.filter((watch) => watch !== coin?.id) }, { merge: true });
-      notification(`${coin.name} Removed to the Watchlist`, 'success');
+      notification(`${coin.name} Removed from the Watchlist`, 'success');
     } catch (error) {
       notification(error.message, 'error');
     }

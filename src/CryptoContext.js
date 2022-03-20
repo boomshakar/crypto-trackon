@@ -16,11 +16,20 @@ const CryptoContext = ({ children }) => {
   const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) setUser(user);
+      else setUser(null);
+    });
+  }, []);
+
+  useEffect(() => {
     if (user) {
-      const coinRef = doc(db, 'watchlist', user?.uid);
+      console.log(user);
+      const coinRef = doc(db, 'watchlist', user.uid);
       var unsubscribe = onSnapshot(coinRef, (coin) => {
         if (coin.exists) {
           setWatchlist(coin.data().coins);
+          console.log(coin.data().coins);
         } else {
           console.log('No items in the watchlist');
         }
@@ -30,12 +39,6 @@ const CryptoContext = ({ children }) => {
       };
     }
   }, [user]);
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) setUser(user);
-      else setUser(null);
-    });
-  }, []);
 
   const fetchCoins = async () => {
     setLoading(true);
@@ -48,10 +51,25 @@ const CryptoContext = ({ children }) => {
   useEffect(() => {
     if (currency === 'NGN') setSymbol('₦');
     else if (currency === 'USD') setSymbol('$');
+    fetchCoins();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency]);
 
+  console.log({ coinlist: coins });
+  console.log({ watch: watchlist });
   return (
-    <Crypto.Provider value={{ currency, setCurrency, symbol, coins, loading, fetchCoins, user, watchlist }}>
+    <Crypto.Provider
+      value={{
+        currency,
+        setCurrency,
+        symbol,
+        coins,
+        loading,
+        user,
+        watchlist,
+      }}
+    >
       {children}
     </Crypto.Provider>
   );

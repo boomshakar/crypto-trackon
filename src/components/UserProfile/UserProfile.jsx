@@ -37,12 +37,14 @@ const UserProfile = () => {
 
   const classes = useStyles();
   const { user } = CryptoState();
+  console.log({ user });
 
   const logout = () => {
     signOut(auth);
     setOpenedPopover(false);
     notification('Logout Successful', 'success');
   };
+
   return (
     <>
       <AvatarContain
@@ -53,7 +55,7 @@ const UserProfile = () => {
         onMouseLeave={popoverLeave}
       >
         <Chip
-          avatar={<Avatar src={user.photoURL || '/broken-image.jpg'} />}
+          avatar={<Avatar src={user?.photoURL || '/broken-image.jpg'} />}
           label={user?.displayName || user?.name || user?.email}
           sx={{ color: Colour.LightrayWrite, borderColor: 'gold' }}
           variant="outlined"
