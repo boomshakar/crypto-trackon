@@ -12,6 +12,6 @@
 
 ## Made with ♥ By [Boomshakar](https://github.com/boomshakar)
 
-[![Ṣosanya Oluwafemi](https://avatars1.githubusercontent.com/u/51760520?v=3&s=144)](https://github.com/boomshakar)
+[![Ṣosanya Oluwafemi](https://avatars.githubusercontent.com/u/51333883?v=4)](https://github.com/boomshakar)
 
 MIT © [Ṣosanya Oluwafemi ](https://github.com/boomshakar)
