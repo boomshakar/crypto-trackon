@@ -186,7 +186,7 @@ const CoinPage = () => {
 
           <div>
             <TextContent fontWeight={500} fontSize={30}>
-              {numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
+              {numberWithCommas(symbol, coin?.market_data?.current_price[currency.toLowerCase()])}
             </TextContent>
             <TextContent
               margin="0 10px"
@@ -210,7 +210,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Market Cap</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  {numberWithCommas(coin?.market_data?.market_cap[currency.toLowerCase()]) || '∞'}
+                  {numberWithCommas(symbol, coin?.market_data?.market_cap[currency.toLowerCase()]) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -223,7 +223,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>24 Hour Trading Vol</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  {numberWithCommas(coin?.market_data?.total_volume[currency.toLowerCase()]) || '∞'}
+                  {numberWithCommas(symbol, coin?.market_data?.total_volume[currency.toLowerCase()]) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -236,7 +236,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Fully Diluted Valuation</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  {numberWithCommas(coin?.market_data?.fully_diluted_valuation[currency.toLowerCase()]) || '∞'}
+                  {numberWithCommas(symbol, coin?.market_data?.fully_diluted_valuation[currency.toLowerCase()]) || '∞'}
                 </TextContent>
               </div>
             </div>
@@ -251,7 +251,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Circulating Supply</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  {numberWithCommas(coin?.market_data?.circulating_supply) || '∞'}
+                  {numberWithCommas(symbol, coin?.market_data?.circulating_supply) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -264,7 +264,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Total Supply</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  {numberWithCommas(coin?.market_data?.total_supply) || '∞'}
+                  {numberWithCommas(symbol, coin?.market_data?.total_supply) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -277,7 +277,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Max Supply</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  {numberWithCommas(coin?.market_data?.max_supply) || '∞'}
+                  {numberWithCommas(symbol, coin?.market_data?.max_supply) || '∞'}
                 </TextContent>
               </div>
             </div>
@@ -365,7 +365,7 @@ const CoinPage = () => {
                   fontFamily: 'Montserrat',
                 }}
               >
-                {numberWithCommas(coin?.market_cap_rank)}
+                {coin?.market_cap_rank}
               </Typography>
             </span>
 
@@ -380,7 +380,7 @@ const CoinPage = () => {
                   fontFamily: 'Montserrat',
                 }}
               >
-                {symbol} {numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
+                {numberWithCommas(symbol, coin?.market_data?.current_price[currency.toLowerCase()])}
               </Typography>
             </span>
             <span style={{ display: 'flex' }}>
@@ -394,8 +394,11 @@ const CoinPage = () => {
                   fontFamily: 'Montserrat',
                 }}
               >
-                {symbol}{' '}
-                {numberWithCommas(coin?.market_data?.market_cap[currency.toLowerCase()].toString().slice(0, -6))}M
+                {numberWithCommas(
+                  symbol,
+                  coin?.market_data?.market_cap[currency.toLowerCase()].toString().slice(0, -6)
+                )}
+                M
               </Typography>
             </span>
           </div>

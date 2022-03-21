@@ -11,6 +11,9 @@ import Colour from '../../lib/color';
 import TextContent from '../textContent';
 
 const Carousel = () => {
+  const [trending, setTrending] = useState([]);
+  const { currency, symbol } = CryptoState();
+
   const carouselItem = {
     display: 'flex',
     flexDirection: 'column',
@@ -24,8 +27,6 @@ const Carousel = () => {
     display: 'flex',
     alignItems: 'center',
   };
-  const [trending, setTrending] = useState([]);
-  const { currency, symbol } = CryptoState();
 
   useEffect(() => {
     fetchTrendingCoins();
@@ -68,7 +69,7 @@ const Carousel = () => {
           </TextContent>
         </span>
         <TextContent fontSize={15} fontWeight={400}>
-          {symbol} {numberWithCommas(coin?.current_price.toFixed(2))}
+          {numberWithCommas(symbol, coin?.current_price.toFixed(2))}
         </TextContent>
       </Link>
     );

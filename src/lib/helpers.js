@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import { CryptoState } from '../CryptoContext';
 import Colour from './color';
 
-export function numberWithCommas(x) {
-  const { symbol } = CryptoState();
+export function numberWithCommas(symbol, x) {
+  // const { symbol } = CryptoState();
   if (x === undefined || x === null) return '∞';
   else return symbol + ' ' + x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

@@ -414,7 +414,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
                               align="right"
                               style={{ fontSize: '12px', color: Colour.LightrayWriteBold }}
                             >
-                              {symbol} {numberWithCommas(row.current_price.toString())}
+                              {numberWithCommas(symbol, row.current_price.toString())}
                             </TableCell>
                             <TableCell
                               onClick={() => history.push(`/coins/${row.id}`)}
@@ -454,7 +454,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
                                 color: Colour.LightrayWriteBold,
                               }}
                             >
-                              {symbol} {numberWithCommas(row.total_volume.toString())}
+                              {numberWithCommas(symbol, row.total_volume.toString())}
                             </TableCell>
                             <TableCell
                               onClick={() => history.push(`/coins/${row.id}`)}
@@ -464,7 +464,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
                                 color: Colour.LightrayWriteBold,
                               }}
                             >
-                              {symbol} {numberWithCommas(row.market_cap.toString())}
+                              {numberWithCommas(symbol, row.market_cap.toString())}
                             </TableCell>
                             <TableCell
                               onClick={() => history.push(`/coins/${row.id}`)}
