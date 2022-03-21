@@ -12,6 +12,8 @@
 
 ## Made with ♥ By [Boomshakar](https://github.com/boomshakar)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d0c29efe-c46e-45a2-b73a-fb7619043602/deploy-status)](https://app.netlify.com/sites/crypto-trackon/deploys)
+
 [![Ṣosanya Oluwafemi](https://avatars.githubusercontent.com/u/51333883?v=4)](https://github.com/boomshakar)
 
 MIT © [Ṣosanya Oluwafemi ](https://github.com/boomshakar)
