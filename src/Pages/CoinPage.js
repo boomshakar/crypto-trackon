@@ -16,12 +16,16 @@ import { db } from '../firebase';
 const TopSection = styled.div`
   display: flex;
   width: 100%;
+  justify-content: space-between;
 `;
 const CoinCapSummary = styled.div`
-  width: 50%;
+  width: 63%;
 `;
-const CoinInfoLinks = styled.div``;
+const CoinInfoLinks = styled.div`
+  width: 33%;
+`;
 const CoinInfoLinksList = styled.div``;
+const CoinInfoLinkTag = styled.a``;
 const CoinPage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
@@ -182,15 +186,15 @@ const CoinPage = () => {
 
           <div>
             <TextContent fontWeight={500} fontSize={30}>
-              ₦{numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()])}
+              {numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
             </TextContent>
             <TextContent
               margin="0 10px"
               fontWeight={500}
               fontSize={20}
-              colour={profitLoss(coin?.market_data.price_change_percentage_24h)}
+              colour={profitLoss(coin?.market_data?.price_change_percentage_24h)}
             >
-              {coin?.market_data.price_change_percentage_24h.toFixed(2)}%
+              {coin?.market_data?.price_change_percentage_24h.toFixed(2)}%
             </TextContent>
           </div>
 
@@ -206,7 +210,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Market Cap</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  Info
+                  {numberWithCommas(coin?.market_data?.market_cap[currency.toLowerCase()]) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -219,7 +223,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>24 Hour Trading Vol</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  Info
+                  {numberWithCommas(coin?.market_data?.total_volume[currency.toLowerCase()]) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -232,11 +236,11 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Fully Diluted Valuation</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  Info
+                  {numberWithCommas(coin?.market_data?.fully_diluted_valuation[currency.toLowerCase()]) || '∞'}
                 </TextContent>
               </div>
             </div>
-            <div style={{ width: '50%' }}>
+            <div style={{ width: '50%', marginLeft: '16px' }}>
               <div
                 style={{
                   display: 'flex',
@@ -247,7 +251,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Circulating Supply</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  Info
+                  {numberWithCommas(coin?.market_data?.circulating_supply) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -260,7 +264,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Total Supply</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  Info
+                  {numberWithCommas(coin?.market_data?.total_supply) || '∞'}
                 </TextContent>
               </div>
               <div
@@ -273,7 +277,7 @@ const CoinPage = () => {
               >
                 <TextContent fontSize={13}>Max Supply</TextContent>
                 <TextContent fontSize={13} fontWeight={500}>
-                  Info
+                  {numberWithCommas(coin?.market_data?.max_supply) || '∞'}
                 </TextContent>
               </div>
             </div>
@@ -281,9 +285,51 @@ const CoinPage = () => {
         </CoinCapSummary>
         <CoinInfoLinks>
           <div>
-            <TextContent>Info</TextContent>
+            <TextContent fontSize={20} fontWeight={500}>
+              Info
+            </TextContent>
           </div>
-          <CoinInfoLinksList></CoinInfoLinksList>
+          <div>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>Website</TextContent>
+              <CoinInfoLinkTag href={coin?.links?.homepage[0]}>{coin?.links?.homepage[0]}</CoinInfoLinkTag>
+            </CoinInfoLinksList>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>Explorers</TextContent>
+              <CoinInfoLinkTag href={coin?.links?.blockchain_site[0]}>Link</CoinInfoLinkTag>
+            </CoinInfoLinksList>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>Community</TextContent>
+              <div>
+                <CoinInfoLinkTag href={coin?.links?.subreddit_url}>Reddit</CoinInfoLinkTag>
+                <CoinInfoLinkTag href={`https://twitter.com/${coin?.links?.twitter_screen_name}`}>
+                  Twitter
+                </CoinInfoLinkTag>
+                <CoinInfoLinkTag href={coin?.links?.telegram_channel_identifier}>Link</CoinInfoLinkTag>
+                <CoinInfoLinkTag href={coin?.links?.official_forum_url[0]}>
+                  {coin?.links?.official_forum_url[0]}
+                </CoinInfoLinkTag>
+              </div>
+            </CoinInfoLinksList>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>Search on</TextContent>
+              <CoinInfoLinkTag href={`https://twitter.com/search?q=${coin?.links?.symbol}`}>
+                Twitter search
+              </CoinInfoLinkTag>
+            </CoinInfoLinksList>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>Source Code</TextContent>
+              <CoinInfoLinkTag href={`https://github.com/${coin?.id}`}>Github</CoinInfoLinkTag>
+            </CoinInfoLinksList>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>API id</TextContent>
+              <CoinInfoLinkTag href={coin?.asset_platform_id}>Link</CoinInfoLinkTag>
+            </CoinInfoLinksList>
+            <CoinInfoLinksList>
+              <TextContent fontSize={13}>Tags</TextContent>
+              <CoinInfoLinkTag href={coin?.categories[0]}>for each</CoinInfoLinkTag>
+            </CoinInfoLinksList>
+          </div>
         </CoinInfoLinks>
       </TopSection>
       <div className={classes.container}>
@@ -334,7 +380,7 @@ const CoinPage = () => {
                   fontFamily: 'Montserrat',
                 }}
               >
-                {symbol} {numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()])}
+                {symbol} {numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
               </Typography>
             </span>
             <span style={{ display: 'flex' }}>
@@ -349,7 +395,7 @@ const CoinPage = () => {
                 }}
               >
                 {symbol}{' '}
-                {numberWithCommas(coin?.market_data.market_cap[currency.toLowerCase()].toString().slice(0, -6))}M
+                {numberWithCommas(coin?.market_data?.market_cap[currency.toLowerCase()].toString().slice(0, -6))}M
               </Typography>
             </span>
           </div>

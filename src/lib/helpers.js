@@ -1,8 +1,12 @@
 import ChartJsImage from 'chartjs-to-image';
 import { toast } from 'react-toastify';
+import { CryptoState } from '../CryptoContext';
 import Colour from './color';
+
 export function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const { symbol } = CryptoState();
+  if (x === undefined || x === null) return '∞';
+  else return symbol + ' ' + x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export const notification = (message, color) => {
