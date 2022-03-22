@@ -12,6 +12,8 @@ import { notification, numberWithCommas, profitLoss } from '../lib/helpers';
 import Colour from '../lib/color';
 import { addDoc, collection, doc, setDoc } from '@firebase/firestore';
 import { db } from '../firebase';
+import AuthModalComp from '../components/Modal/Modal';
+import { ModalState } from '../context/ModalContext';
 
 const TopSection = styled.div`
   display: flex;
@@ -32,6 +34,7 @@ const CoinPage = () => {
   const [progress, setProgress] = useState(0);
 
   const { currency, symbol, user, watchlist } = CryptoState();
+  const { modalOpen } = ModalState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
@@ -159,8 +162,10 @@ const CoinPage = () => {
     );
   }
 
+  // if (modalOpen) return <AuthModalComp />;
   return (
     <>
+      {modalOpen && <AuthModalComp />}
       <TopSection>
         <CoinCapSummary>
           <div>

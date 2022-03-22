@@ -29,6 +29,7 @@ const style = {
   color: Colour.DarkGrayWrite,
   p: 1,
   typography: 'body1',
+  zIndex: 999999,
 };
 
 export default function AuthModalComp() {
