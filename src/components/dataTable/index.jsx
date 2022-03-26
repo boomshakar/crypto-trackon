@@ -344,7 +344,7 @@ const DataTable = ({ dataTBL, userStatus }) => {
                         }}
                         colSpan={9}
                       >
-                        <div style={{ width: '100%' }}>Hello</div>
+                        <div style={{ width: '100%' }}>{user ? 'Your list is empty' : 'You are not Logged in 😏'}</div>
                       </TableCell>
                     </TableRow>
                   </TableBody>
