@@ -36,6 +36,7 @@ const RightNav = styled.div`
   align-items: center;
 `;
 const NavLogo = styled.div`
+  cursor: pointer;
   ${'' /* position: relative; */}
 `;
 const NavList = styled.ul`
@@ -53,6 +54,7 @@ const LeftNav = styled.div`
   background: #262729;
   color: #93979e;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -120,15 +122,15 @@ const Layout = ({ children }) => {
         <RightNav>
           <NavLogo onClick={() => history.push(`/`)}>
             <TextContent fontSize={24} fontWeight="700">
-              Logo
+              Cryto Trackon
             </TextContent>
           </NavLogo>
-          <NavList>
+          {/* <NavList>
             <li>Assets</li>
             <li>Exchange</li>
             <li>Coverter</li>
             <li>Watchlist</li>
-          </NavList>
+          </NavList> */}
         </RightNav>
         <LeftNav>
           <Select
@@ -136,7 +138,13 @@ const Layout = ({ children }) => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={currency}
-            style={{ width: 100, height: 40, marginLeft: 15 }}
+            style={{
+              width: 100,
+              height: 40,
+              marginLeft: 15,
+              color: Colour.DarkGrayWrite,
+              border: `1px solid ${Colour.DarkGrayWrite}`,
+            }}
             onChange={(e) => setCurrency(e.target.value)}
           >
             <MenuItem value={'NGN'}>NGN</MenuItem>
